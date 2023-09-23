@@ -3,9 +3,9 @@
 
 using namespace std;
 
-bool signChecker(int *mas, int &size);
-int simpleNumFinder(int *mas, int &size);
-void deleteSimpleNums(int index, int *mas, int &size);
+bool signOrderChecker(int *mas, int &size);
+int primeNumFinder(int *mas, int &size);
+void deletePrimeNums(int index, int *mas, int &size);
 
 int main()
 {
@@ -17,7 +17,7 @@ int main()
     for (int i = 0; i < size; i++)
         cin >> mas[i];
 
-    if (signChecker(mas, size))
+    if (signOrderChecker(mas, size))
     {
         cout << "Массив является знакочередующимся." << endl;
 
@@ -29,12 +29,12 @@ int main()
         cout << "Массив НЕ является знакочередующимся." << endl;
         cout << "Удаляем простые числа из массива..." << endl;
 
-        int finders_result = simpleNumFinder(mas, size);
+        int finders_result = primeNumFinder(mas, size);
 
         while (finders_result != -1)
         {
-            deleteSimpleNums(finders_result, mas, size);
-            finders_result = simpleNumFinder(mas, size);
+            deletePrimeNums(finders_result, mas, size);
+            finders_result = primeNumFinder(mas, size);
         }
 
         cout << "Готово: все простые числа были удалены из массива." << endl;
@@ -44,7 +44,7 @@ int main()
 
         cout << endl;
 
-        if (signChecker(mas, size))
+        if (signOrderChecker(mas, size))
             cout << "Массив стал знакочередующимся." << endl;
         else
             cout << "Массив НЕ стал знакочередующимся." << endl;
@@ -54,7 +54,7 @@ int main()
     }
 }
 
-bool signChecker(int *mas, int &size)
+bool signOrderChecker(int *mas, int &size)
 {
     for (int i = 0; i < size - 1; i++)
         if ((mas[i] > 0 && mas[i + 1] > 0) || (mas[i] < 0 && mas[i + 1] < 0))
@@ -63,7 +63,7 @@ bool signChecker(int *mas, int &size)
     return true;
 }
 
-int simpleNumFinder(int *mas, int &size)
+int primeNumFinder(int *mas, int &size)
 {
     for (int i = 0; i < size; i++)
         if (mas[i] % 2 == 0)
@@ -71,7 +71,7 @@ int simpleNumFinder(int *mas, int &size)
     return -1;
 }
 
-void deleteSimpleNums(int index, int *mas, int &size)
+void deletePrimeNums(int index, int *mas, int &size)
 {
     for (int i = index; i < size; i++)
         mas[i] = mas[i + 1];
