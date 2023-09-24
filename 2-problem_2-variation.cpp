@@ -11,13 +11,14 @@ private:
 public:
     Triangle();
     Triangle(double a, double b, double c);
+    Triangle(const Triangle &obj);
     void setTriangle(double custom_a, double custom_b, double custom_c);
     bool existence();
     void perimeter();
     void area();
     void corners();
-    void printSides();
-    // ~Triangle();
+    void sides();
+    ~Triangle();
 };
 
 Triangle::Triangle()
@@ -30,6 +31,10 @@ Triangle::Triangle(double a, double b, double c)
     setTriangle(a, b, c);
 }
 
+Triangle::Triangle(const Triangle &obj)
+{
+}
+
 void Triangle::setTriangle(double custom_a, double custom_b, double custom_c)
 {
     a = custom_a;
@@ -39,7 +44,7 @@ void Triangle::setTriangle(double custom_a, double custom_b, double custom_c)
 
 bool Triangle::existence()
 {
-    if (a > b + c && b > a + c && c > a + b)
+    if (a < b + c && b < a + c && c < a + b)
         return true;
     else
         return false;
@@ -47,13 +52,13 @@ bool Triangle::existence()
 
 void Triangle::perimeter()
 {
-    cout << a + b + c << endl;
+    cout << "   Периметр: " << a + b + c << endl;
 }
 
 void Triangle::area()
 {
     double p = (a + b + c) / 2;
-    cout << sqrt(p * (p - a) * (p - b) * (p - c)) << endl;
+    cout << "   Площадь: " << sqrt(p * (p - a) * (p - b) * (p - c)) << endl;
 }
 
 void Triangle::corners()
@@ -63,12 +68,17 @@ void Triangle::corners()
     alpha = acos((c * c + b * b - a * a) / (2 * c * b)) * 180 / PI;
     beta = acos((c * c + a * a - b * b) / (2 * c * a)) * 180 / PI;
     gamma = acos((a * a + b * b - c * c) / (2 * a * b)) * 180 / PI;
-    cout << alpha << " " << beta << " " << gamma << endl;
+    cout << "   Углы: " << alpha << ", " << beta << ", " << gamma << endl;
 }
 
-void Triangle::printSides()
+void Triangle::sides()
 {
-    cout << a << " " << b << " " << c << endl;
+    cout << "   Стороны: " << a << ", " << b << ", " << c << endl;
+}
+
+Triangle::~Triangle()
+{
+    cout << "Память освобождена: объект был удалён." << endl;
 }
 
 int main()
@@ -76,10 +86,24 @@ int main()
     double a, b, c;
     cin >> a >> b >> c;
     Triangle t = Triangle(a, b, c);
-    t.printSides();
-    t.perimeter();
-    t.area();
-    t.corners();
 
-    return 0;
+    if (t.existence())
+    {
+        cout << "Данный треугольник существует." << endl;
+        cout << "Свойства заданного Вами треугольника: " << endl;
+
+        t.sides();
+        t.perimeter();
+        t.area();
+        t.corners();
+
+        return 0;
+    }
+
+    else
+    {
+        cout << "Данный треугольник НЕ существует." << endl;
+
+        return 0;
+    }
 }
