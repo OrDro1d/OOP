@@ -7,6 +7,7 @@ class Triangle
 {
 private:
     double a, b, c;
+    int setTriangle(int x) { return x; };
 
 public:
     Triangle();
@@ -24,15 +25,21 @@ public:
 Triangle::Triangle()
 {
     a = b = c = 1.0;
+    cout << " -- Был вызван конструктор по-умолчанию -- " << endl;
 }
 
 Triangle::Triangle(double a, double b, double c)
 {
     setTriangle(a, b, c);
+    cout << " -- Был вызван конструктор -- " << endl;
 }
 
 Triangle::Triangle(const Triangle &obj)
 {
+    a = setTriangle(obj.a);
+    b = setTriangle(obj.b);
+    c = setTriangle(obj.c);
+    cout << " -- Был вызван конструктор копирования -- " << endl;
 }
 
 void Triangle::setTriangle(double custom_a, double custom_b, double custom_c)
@@ -78,6 +85,7 @@ void Triangle::sides()
 
 Triangle::~Triangle()
 {
+    cout << " -- Был вызван деструктор -- " << endl;
     cout << "Память освобождена: объект был удалён." << endl;
 }
 
@@ -96,6 +104,9 @@ int main()
         t.perimeter();
         t.area();
         t.corners();
+
+        Triangle t2 = t;
+        cout << "Объект 't2' был создан и скопировал свойства объекта 't'" << endl;
 
         return 0;
     }
