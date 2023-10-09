@@ -68,9 +68,15 @@ int primeNumFinder(int *mas, int &size)
     for (int i = 0; i < size; i++)
     {
         bool flag = true;
+
+        if (mas[i] < 2)
+            continue;
+        else if (abs(mas[i]) == 2)
+            return i;
+
         for (int j = 2; j < sqrt(abs(mas[i])) + 1; j++)
         {
-            if (mas[i] % j == 0 && abs(mas[i]) != 2)
+            if (mas[i] % j == 0)
             {
                 flag = false;
                 break;
