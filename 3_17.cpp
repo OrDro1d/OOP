@@ -147,6 +147,7 @@ void Array::createAndFill(int customRows, int customCols)
     array = new double *[rows];
 
     for (int i = 0; i < rows; i++)
+
     {
         array[i] = new double[cols];
     }
@@ -381,12 +382,12 @@ const bool Array::operator!=(const Array &customArr)
     return false;
 }
 
-const Array Array::inverse()
-{
-}
-const Array Array::transposition()
-{
-}
+// const Array Array::inverse()
+// {
+// }
+// const Array Array::transposition()
+// {
+// }
 
 Array::~Array()
 {
