@@ -1,116 +1,170 @@
 #include <iostream>
 using namespace std;
 
-class DoubleArray
+class Array
 {
 private:
-    unsigned int n, m;
+    int rows, cols;
     double **array;
 
 public:
-    void create(unsigned int users_n, unsigned int users_m);
+    Array(){};
+    Array(int customRows, int customCols);
+    Array(const Array &obj);
+
+    void create(int customRows, int customCols);
     void fill();
-    void createAndFill(unsigned int users_n, unsigned int users_m);
+    void createAndFill(int customRows, int customCols);
     void print();
-    void plus(double num);
-    void minus(double num);
-    void multiply(double num);
-    void divide(double num);
-    void equality(DoubleArray users_arr);
+
+    const Array operator+(const Array &customArr);
+    const Array operator-(const Array &customArr);
+    const Array operator*(const Array &customArr);
+    const Array operator*(const double &number);
+    const Array operator/(const Array &customArr);
+    const Array operator/(const double &number);
+
+    void operator+=(const Array &customArr);
+    void operator-=(const Array &customArr);
+    void operator*=(const Array &customArr);
+    void operator*=(const double &number);
+    void operator/=(const Array &customArr);
+    void operator/=(const double &number);
+
+    const bool operator==(const Array &usersArr);
+    const bool operator!=(const Array &usersArr);
+
+    const Array inverse();
+    const Array transposition();
+
+    ~Array();
 };
 
-void DoubleArray::create(unsigned int users_n, unsigned int users_m)
+int main()
 {
-    n = users_n;
-    m = users_m;
+    Array arr;
 
-    array = new double *[n];
-    for (unsigned int i = 0; i < n; i++)
+    int rows, cols;
+    cin >> rows >> cols;
+
+    cout << "Заполните первый массив:" << endl;
+    arr.create(rows, cols);
+    arr.fill();
+    arr.print();
+
+    Array anotherArr;
+
+    int anotherRows, anotherCols;
+    cin >> anotherRows >> anotherCols;
+
+    cout << "Заполните второй массив:" << endl;
+    anotherArr.createAndFill(anotherRows, anotherCols);
+    anotherArr.print();
+
+    Array resultArr = arr * anotherArr;
+    cout << "Вот результирующий массив:" << endl;
+    resultArr.print();
+
+    return 0;
+}
+
+Array::Array(int customRows, int customCols)
+{
+    rows = customRows;
+    cols = customCols;
+
+    array = new double *[rows];
+    for (int i = 0; i < rows; i++)
     {
-        array[i] = new double[m];
+        array[i] = new double[cols];
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] = 0;
+        }
     }
 }
 
-void DoubleArray::fill()
+void Array::create(int customRows, int customCols)
 {
-    for (int i = 0; i < n; i++)
+    rows = customRows;
+    cols = customCols;
+
+    array = new double *[rows];
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < m; j++)
+        array[i] = new double[cols];
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] = 0.0;
+        }
+    }
+}
+
+Array::Array(const Array &obj)
+{
+    rows = obj.rows;
+    cols = obj.cols;
+
+    array = new double *[rows];
+    for (int i = 0; i < rows; i++)
+    {
+        array[i] = new double[cols];
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] = obj.array[i][j];
+        }
+    }
+}
+
+void Array::fill()
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
         {
             cin >> array[i][j];
         }
     }
 }
 
-void DoubleArray::createAndFill(unsigned int users_n, unsigned int users_m)
+void Array::createAndFill(int customRows, int customCols)
 {
-    n = users_n;
-    m = users_m;
+    rows = customRows;
+    cols = customCols;
 
-    array = new double *[n];
-    for (unsigned int i = 0; i < n; i++)
+    array = new double *[rows];
+
+    for (int i = 0; i < rows; i++)
     {
-        array[i] = new double[m];
+        array[i] = new double[cols];
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < cols; j++)
         {
             cin >> array[i][j];
         }
     }
 }
 
-void DoubleArray::plus(double num)
+void Array::print()
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            array[i][j] += num;
-        }
-    }
-}
-
-void DoubleArray::minus(double num)
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            array[i][j] -= num;
-        }
-    }
-}
-
-void DoubleArray::multiply(double num)
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            array[i][j] *= num;
-        }
-    }
-}
-
-void DoubleArray::divide(double num)
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            array[i][j] /= num;
-        }
-    }
-}
-
-void DoubleArray::print()
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < cols; j++)
         {
             cout << array[i][j] << " ";
         }
@@ -119,20 +173,227 @@ void DoubleArray::print()
     }
 }
 
-void equality(DoubleArray users_arr)
+const Array Array::operator+(const Array &customArr)
+{
+    Array temp(customArr.rows, customArr.cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.array[i][j] = customArr.array[i][j] + array[i][j];
+        }
+    }
+
+    return temp;
+}
+
+const Array Array::operator-(const Array &customArr)
+{
+    Array temp(customArr.rows, customArr.cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.array[i][j] = customArr.array[i][j] - array[i][j];
+        }
+    }
+
+    return temp;
+}
+
+const Array Array::operator*(const Array &customArr)
+{
+    Array temp(rows, customArr.cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < customArr.cols; j++)
+        {
+            double counter = 0;
+            for (int k = 0; k < cols; k++)
+            {
+                counter += array[i][k] * customArr.array[k][j];
+            }
+            temp.array[i][j] = counter;
+        }
+    }
+
+    return temp;
+}
+
+const Array Array::operator*(const double &number)
+{
+    Array temp(rows, cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.array[i][j] = array[i][j] * number;
+        }
+    }
+
+    return temp;
+}
+
+const Array Array::operator/(const Array &customArr)
+{
+    Array temp(rows, customArr.cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < customArr.cols; j++)
+        {
+            double counter = 0;
+            for (int k = 0; k < cols; k++)
+            {
+                counter += array[i][k] / customArr.array[k][j];
+            }
+            temp.array[i][j] = counter;
+        }
+    }
+
+    return temp;
+}
+
+const Array Array::operator/(const double &number)
+{
+    Array temp(rows, cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.array[i][j] = array[i][j] / number;
+        }
+    }
+
+    return temp;
+}
+
+void Array::operator+=(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] += customArr.array[i][j];
+        }
+    }
+}
+
+void Array::operator-=(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] -= customArr.array[i][j];
+        }
+    }
+}
+
+void Array::operator*=(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < customArr.cols; j++)
+        {
+            double counter = 0;
+            for (int k = 0; k < cols; k++)
+            {
+                counter += array[i][k] * customArr.array[k][j];
+            }
+            array[i][j] = counter;
+        }
+    }
+}
+
+void Array::operator*=(const double &number)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] *= number;
+        }
+    }
+}
+
+void Array::operator/=(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < customArr.cols; j++)
+        {
+            double counter = 0;
+            for (int k = 0; k < cols; k++)
+            {
+                counter += array[i][k] / customArr.array[k][j];
+            }
+            array[i][j] = counter;
+        }
+    }
+}
+
+void Array::operator/=(const double &number)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            array[i][j] /= number;
+        }
+    }
+}
+
+const bool Array::operator==(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (array[i][j] != customArr.array[i][j])
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+const bool Array::operator!=(const Array &customArr)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (array[i][j] != customArr.array[i][j])
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+const Array Array::inverse()
+{
+}
+const Array Array::transposition()
 {
 }
 
-int main()
+Array::~Array()
 {
-    unsigned int rows, cols;
-    cin >> rows >> cols;
+    for (int i = 0; i < rows; i++)
+    {
+        delete array[i];
+    }
 
-    DoubleArray arr;
-    arr.create(rows, cols);
-    arr.fill();
-    arr.print();
-    DoubleArray another_arr;
-
-    return 0;
+    delete array;
 }
