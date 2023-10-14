@@ -1,362 +1,394 @@
 #include <iostream>
 using namespace std;
 
-class Array
+class Matrix
 {
 private:
     int rows, cols;
-    double **array;
+    double **matrix = nullptr;
 
 public:
-    Array(){};
-    Array(int customRows, int customCols);
-    Array(const Array &obj);
+    Matrix(){};
+    Matrix(int customRows, int customCols);
+    Matrix(const Matrix &obj);
 
     void create(int customRows, int customCols);
     void fill();
     void createAndFill(int customRows, int customCols);
     void print();
 
-    const Array operator+(const Array &customArr);
-    const Array operator-(const Array &customArr);
-    const Array operator*(const Array &customArr);
-    const Array operator*(const double &number);
-    const Array operator/(const Array &customArr);
-    const Array operator/(const double &number);
+    void operator=(const Matrix &customMatrix);
 
-    void operator+=(const Array &customArr);
-    void operator-=(const Array &customArr);
-    void operator*=(const Array &customArr);
+    const Matrix operator+(const Matrix &customMatrix);
+    const Matrix operator-(const Matrix &customMatrix);
+    const Matrix operator*(const Matrix &customMatrix);
+    const Matrix operator*(const double &number);
+    const Matrix operator/(const Matrix &customMatrix);
+    const Matrix operator/(const double &number);
+
+    void operator+=(const Matrix &customMatrix);
+    void operator-=(const Matrix &customMatrix);
+    void operator*=(const Matrix &customMatrix);
     void operator*=(const double &number);
-    void operator/=(const Array &customArr);
+    void operator/=(const Matrix &customMatrix);
     void operator/=(const double &number);
 
-    const bool operator==(const Array &usersArr);
-    const bool operator!=(const Array &usersArr);
+    const bool operator==(const Matrix &usersMatrix);
+    const bool operator!=(const Matrix &usersMatrix);
 
-    const Array inverse();
-    const Array transposition();
+    const Matrix inverse();
+    const Matrix transposition();
 
-    ~Array();
+    ~Matrix();
 };
 
 int main()
 {
-    Array arr;
+    Matrix matrix;
 
+    cout << "Задайте размеры первой матрицы:" << endl;
     int rows, cols;
     cin >> rows >> cols;
 
-    cout << "Заполните первый массив:" << endl;
-    arr.create(rows, cols);
-    arr.fill();
-    arr.print();
+    cout << "Заполните первую матрицу:" << endl;
+    matrix.create(rows, cols);
+    matrix.fill();
+    cout << "Ваша первая матрица:" << endl;
+    matrix.print();
 
-    Array anotherArr;
+    Matrix anotherMatrix, resultMatrix;
 
+    cout << "Задайте размеры второй матрицы:" << endl;
     int anotherRows, anotherCols;
     cin >> anotherRows >> anotherCols;
 
-    cout << "Заполните второй массив:" << endl;
-    anotherArr.createAndFill(anotherRows, anotherCols);
-    anotherArr.print();
+    cout << "Заполните вторую матрицу:" << endl;
+    anotherMatrix.createAndFill(anotherRows, anotherCols);
+    cout << "Ваша вторая матрица:" << endl;
+    anotherMatrix.print();
 
-    Array resultArr = arr * anotherArr;
-    cout << "Вот результирующий массив:" << endl;
-    resultArr.print();
+    cout << "Произведение матриц:" << endl;
+    resultMatrix = matrix * anotherMatrix;
+    resultMatrix.print();
+
+    // resultMatrix = matrix / anotherMatrix;
+    // cout << "Частное массивов:" << endl;
+    // resultMatrix.print();
+
+    cout << "Транспонированная матрица:" << endl;
+    resultMatrix = matrix.transposition();
+    resultMatrix.print();
 
     return 0;
 }
 
-Array::Array(int customRows, int customCols)
+Matrix::Matrix(int customRows, int customCols)
 {
     rows = customRows;
     cols = customCols;
 
-    array = new double *[rows];
+    matrix = new double *[rows];
     for (int i = 0; i < rows; i++)
     {
-        array[i] = new double[cols];
+        matrix[i] = new double[cols];
     }
 
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            array[i][j] = 0;
+            matrix[i][j] = 0;
         }
     }
 }
 
-void Array::create(int customRows, int customCols)
-{
-    rows = customRows;
-    cols = customCols;
-
-    array = new double *[rows];
-    for (int i = 0; i < rows; i++)
-    {
-        array[i] = new double[cols];
-    }
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            array[i][j] = 0.0;
-        }
-    }
-}
-
-Array::Array(const Array &obj)
+Matrix::Matrix(const Matrix &obj)
 {
     rows = obj.rows;
     cols = obj.cols;
 
-    array = new double *[rows];
+    matrix = new double *[rows];
     for (int i = 0; i < rows; i++)
     {
-        array[i] = new double[cols];
+        matrix[i] = new double[cols];
     }
 
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            array[i][j] = obj.array[i][j];
+            matrix[i][j] = obj.matrix[i][j];
         }
     }
 }
 
-void Array::fill()
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            cin >> array[i][j];
-        }
-    }
-}
-
-void Array::createAndFill(int customRows, int customCols)
+void Matrix::create(int customRows, int customCols)
 {
     rows = customRows;
     cols = customCols;
 
-    array = new double *[rows];
-
-    for (int i = 0; i < rows; i++)
-
-    {
-        array[i] = new double[cols];
-    }
-
+    matrix = new double *[rows];
     for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < cols; j++)
-        {
-            cin >> array[i][j];
-        }
+        matrix[i] = new double[cols];
     }
 }
 
-void Array::print()
+void Matrix::fill()
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            cout << array[i][j] << " ";
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+void Matrix::createAndFill(int customRows, int customCols)
+{
+    rows = customRows;
+    cols = customCols;
+
+    matrix = new double *[rows];
+
+    for (int i = 0; i < rows; i++)
+
+    {
+        matrix[i] = new double[cols];
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+void Matrix::print()
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << matrix[i][j] << " ";
         }
 
         cout << endl;
     }
 }
 
-const Array Array::operator+(const Array &customArr)
+void Matrix::operator=(const Matrix &customMatrix)
 {
-    Array temp(customArr.rows, customArr.cols);
+    if (matrix != nullptr)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            delete matrix[i];
+        }
+
+        delete matrix;
+    }
+
+    rows = customMatrix.rows;
+    cols = customMatrix.cols;
+
+    matrix = new double *[rows];
+
+    for (int i = 0; i < rows; i++)
+
+    {
+        matrix[i] = new double[cols];
+    }
 
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            temp.array[i][j] = customArr.array[i][j] + array[i][j];
+            matrix[i][j] = customMatrix.matrix[i][j];
+        }
+    }
+}
+
+const Matrix Matrix::operator+(const Matrix &customMatrix)
+{
+    if (customMatrix.rows == rows && customMatrix.cols == cols)
+    {
+        Matrix temp(customMatrix.rows, customMatrix.cols);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                temp.matrix[i][j] = customMatrix.matrix[i][j] + matrix[i][j];
+            }
+        }
+
+        return temp;
+    }
+    else
+    {
+        cout << "[ -- ERROR: Для нахождения суммы размеры матриц должны совпадать! -- ]" << endl;
+    }
+}
+
+const Matrix Matrix::operator-(const Matrix &customMatrix)
+{
+    if (customMatrix.rows == rows && customMatrix.cols == cols)
+    {
+        Matrix temp(customMatrix.rows, customMatrix.cols);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                temp.matrix[i][j] = customMatrix.matrix[i][j] - matrix[i][j];
+            }
+        }
+
+        return temp;
+    }
+    else
+    {
+        cout << "[ -- ERROR: Для нахождения разности размеры матриц должны совпадать! -- ]" << endl;
+    }
+}
+
+const Matrix Matrix::operator*(const Matrix &customMatrix)
+{
+
+    if (customMatrix.rows == cols)
+    {
+        Matrix temp(rows, customMatrix.cols);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < customMatrix.cols; j++)
+            {
+                double counter = 0;
+                for (int k = 0; k < cols; k++)
+                {
+                    counter += matrix[i][k] * customMatrix.matrix[k][j];
+                }
+                temp.matrix[i][j] = counter;
+            }
+        }
+
+        return temp;
+    }
+    else
+    {
+        cout << "[ -- ERROR: Для нахождения произведения двух матриц количество колонок первой матрицы и количество строк второй матрицы должны совпадать! -- ]" << endl;
+    }
+}
+
+const Matrix Matrix::operator*(const double &number)
+{
+    Matrix temp(rows, cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.matrix[i][j] = matrix[i][j] * number;
         }
     }
 
     return temp;
 }
 
-const Array Array::operator-(const Array &customArr)
+// const Matrix Matrix::operator/(const Matrix &customMatrix)
+// {
+// }
+
+const Matrix Matrix::operator/(const double &number)
 {
-    Array temp(customArr.rows, customArr.cols);
+    Matrix temp(rows, cols);
 
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            temp.array[i][j] = customArr.array[i][j] - array[i][j];
+            temp.matrix[i][j] = matrix[i][j] / number;
         }
     }
 
     return temp;
 }
 
-const Array Array::operator*(const Array &customArr)
+void Matrix::operator+=(const Matrix &customMatrix)
 {
-    Array temp(rows, customArr.cols);
-
     for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < customArr.cols; j++)
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i][j] += customMatrix.matrix[i][j];
+        }
+    }
+}
+
+void Matrix::operator-=(const Matrix &customMatrix)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            matrix[i][j] -= customMatrix.matrix[i][j];
+        }
+    }
+}
+
+void Matrix::operator*=(const Matrix &customMatrix)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < customMatrix.cols; j++)
         {
             double counter = 0;
             for (int k = 0; k < cols; k++)
             {
-                counter += array[i][k] * customArr.array[k][j];
+                counter += matrix[i][k] * customMatrix.matrix[k][j];
             }
-            temp.array[i][j] = counter;
+            matrix[i][j] = counter;
         }
     }
-
-    return temp;
 }
 
-const Array Array::operator*(const double &number)
-{
-    Array temp(rows, cols);
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            temp.array[i][j] = array[i][j] * number;
-        }
-    }
-
-    return temp;
-}
-
-const Array Array::operator/(const Array &customArr)
-{
-    Array temp(rows, customArr.cols);
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < customArr.cols; j++)
-        {
-            double counter = 0;
-            for (int k = 0; k < cols; k++)
-            {
-                counter += array[i][k] / customArr.array[k][j];
-            }
-            temp.array[i][j] = counter;
-        }
-    }
-
-    return temp;
-}
-
-const Array Array::operator/(const double &number)
-{
-    Array temp(rows, cols);
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            temp.array[i][j] = array[i][j] / number;
-        }
-    }
-
-    return temp;
-}
-
-void Array::operator+=(const Array &customArr)
+void Matrix::operator*=(const double &number)
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            array[i][j] += customArr.array[i][j];
+            matrix[i][j] *= number;
         }
     }
 }
 
-void Array::operator-=(const Array &customArr)
+// void Matrix::operator/=(const Matrix &customMatrix)
+// {
+// }
+
+void Matrix::operator/=(const double &number)
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            array[i][j] -= customArr.array[i][j];
+            matrix[i][j] /= number;
         }
     }
 }
 
-void Array::operator*=(const Array &customArr)
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < customArr.cols; j++)
-        {
-            double counter = 0;
-            for (int k = 0; k < cols; k++)
-            {
-                counter += array[i][k] * customArr.array[k][j];
-            }
-            array[i][j] = counter;
-        }
-    }
-}
-
-void Array::operator*=(const double &number)
+const bool Matrix::operator==(const Matrix &customMatrix)
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            array[i][j] *= number;
-        }
-    }
-}
-
-void Array::operator/=(const Array &customArr)
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < customArr.cols; j++)
-        {
-            double counter = 0;
-            for (int k = 0; k < cols; k++)
-            {
-                counter += array[i][k] / customArr.array[k][j];
-            }
-            array[i][j] = counter;
-        }
-    }
-}
-
-void Array::operator/=(const double &number)
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            array[i][j] /= number;
-        }
-    }
-}
-
-const bool Array::operator==(const Array &customArr)
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            if (array[i][j] != customArr.array[i][j])
+            if (matrix[i][j] != customMatrix.matrix[i][j])
             {
                 return false;
             }
@@ -366,13 +398,13 @@ const bool Array::operator==(const Array &customArr)
     return true;
 }
 
-const bool Array::operator!=(const Array &customArr)
+const bool Matrix::operator!=(const Matrix &customMatrix)
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            if (array[i][j] != customArr.array[i][j])
+            if (matrix[i][j] != customMatrix.matrix[i][j])
             {
                 return true;
             }
@@ -382,19 +414,37 @@ const bool Array::operator!=(const Array &customArr)
     return false;
 }
 
-// const Array Array::inverse()
-// {
-// }
-// const Array Array::transposition()
-// {
-// }
-
-Array::~Array()
+const Matrix Matrix::inverse()
 {
-    for (int i = 0; i < rows; i++)
+    Matrix temp(rows, cols);
+
+    return temp;
+}
+
+const Matrix Matrix::transposition()
+{
+    Matrix temp(cols, rows);
+
+    for (int i = 0; i < cols; i++)
     {
-        delete array[i];
+        for (int j = 0; j < rows; j++)
+        {
+            temp.matrix[i][j] = matrix[j][i];
+        }
     }
 
-    delete array;
+    return temp;
+}
+
+Matrix::~Matrix()
+{
+    if (matrix != nullptr)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            delete matrix[i];
+        }
+
+        delete matrix;
+    }
 }
