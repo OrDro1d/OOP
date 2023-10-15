@@ -36,7 +36,8 @@ public:
     const bool operator==(const Matrix &usersMatrix);
     const bool operator!=(const Matrix &usersMatrix);
 
-    const Matrix inverse();
+    const double calculateDeterminant();
+    Matrix inverse();
     const Matrix transposition();
 
     ~Matrix();
@@ -72,12 +73,15 @@ int main()
     resultMatrix.print();
 
     // resultMatrix = matrix / anotherMatrix;
-    // cout << "Частное массивов:" << endl;
+    // cout << "Частное матриц:" << endl;
     // resultMatrix.print();
 
-    cout << "Транспонированная матрица:" << endl;
+    cout << "Транспонированная первая матрица:" << endl;
     resultMatrix = matrix.transposition();
     resultMatrix.print();
+
+    cout << "Детерминант первой матрицы:" << endl;
+    cout << matrix.calculateDeterminant() << endl;
 
     return 0;
 }
@@ -230,7 +234,7 @@ const Matrix Matrix::operator+(const Matrix &customMatrix)
     }
     else
     {
-        cout << "[ -- ERROR: Для нахождения суммы размеры матриц должны совпадать! -- ]" << endl;
+        cout << "[> ERROR: Для нахождения суммы размеры матриц должны совпадать! <" << endl;
     }
 }
 
@@ -252,7 +256,7 @@ const Matrix Matrix::operator-(const Matrix &customMatrix)
     }
     else
     {
-        cout << "[ -- ERROR: Для нахождения разности размеры матриц должны совпадать! -- ]" << endl;
+        cout << "[> ERROR: Для нахождения разности размеры матриц должны совпадать! <]" << endl;
     }
 }
 
@@ -280,7 +284,7 @@ const Matrix Matrix::operator*(const Matrix &customMatrix)
     }
     else
     {
-        cout << "[ -- ERROR: Для нахождения произведения двух матриц количество колонок первой матрицы и количество строк второй матрицы должны совпадать! -- ]" << endl;
+        cout << "[> ERROR: Для нахождения произведения двух матриц количество колонок первой матрицы и количество строк второй матрицы должны совпадать! <]" << endl;
     }
 }
 
@@ -299,9 +303,21 @@ const Matrix Matrix::operator*(const double &number)
     return temp;
 }
 
-// const Matrix Matrix::operator/(const Matrix &customMatrix)
-// {
-// }
+const Matrix Matrix::operator/(const Matrix &customMatrix)
+{
+    Matrix temp(rows, cols);
+    Matrix inversedCustomMatrix = customMatrix.inverse();
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            temp.matrix[i][j] = inversedCustomMatrix.matrix[i][j];
+        }
+    }
+
+    return temp;
+}
 
 const Matrix Matrix::operator/(const double &number)
 {
@@ -320,39 +336,60 @@ const Matrix Matrix::operator/(const double &number)
 
 void Matrix::operator+=(const Matrix &customMatrix)
 {
-    for (int i = 0; i < rows; i++)
+    if (rows == customMatrix.rows && cols == customMatrix.cols)
     {
-        for (int j = 0; j < cols; j++)
+        for (int i = 0; i < rows; i++)
         {
-            matrix[i][j] += customMatrix.matrix[i][j];
+            for (int j = 0; j < cols; j++)
+            {
+                matrix[i][j] += customMatrix.matrix[i][j];
+            }
         }
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения суммы размеры матриц должны совпадать! <" << endl;
     }
 }
 
 void Matrix::operator-=(const Matrix &customMatrix)
 {
-    for (int i = 0; i < rows; i++)
+    if (rows == customMatrix.rows && cols == customMatrix.cols)
     {
-        for (int j = 0; j < cols; j++)
+        for (int i = 0; i < rows; i++)
         {
-            matrix[i][j] -= customMatrix.matrix[i][j];
+            for (int j = 0; j < cols; j++)
+            {
+                matrix[i][j] -= customMatrix.matrix[i][j];
+            }
         }
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения разности размеры размеры матриц должны совпадать! <" << endl;
     }
 }
 
 void Matrix::operator*=(const Matrix &customMatrix)
 {
-    for (int i = 0; i < rows; i++)
+    if (rows == customMatrix.rows && cols == customMatrix.cols)
     {
-        for (int j = 0; j < customMatrix.cols; j++)
+        for (int i = 0; i < rows; i++)
         {
-            double counter = 0;
-            for (int k = 0; k < cols; k++)
+            for (int j = 0; j < customMatrix.cols; j++)
             {
-                counter += matrix[i][k] * customMatrix.matrix[k][j];
+                double counter = 0;
+                for (int k = 0; k < cols; k++)
+                {
+                    counter += matrix[i][k] * customMatrix.matrix[k][j];
+                }
+                matrix[i][j] = counter;
             }
-            matrix[i][j] = counter;
         }
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения произведения размеры матриц должны совпадать! <" << endl;
     }
 }
 
@@ -367,9 +404,16 @@ void Matrix::operator*=(const double &number)
     }
 }
 
-// void Matrix::operator/=(const Matrix &customMatrix)
-// {
-// }
+void Matrix::operator/=(const Matrix &customMatrix)
+{
+    if (rows == customMatrix.rows && cols == customMatrix.cols)
+    {
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения произведения размеры матриц должны совпадать! <" << endl;
+    }
+}
 
 void Matrix::operator/=(const double &number)
 {
@@ -384,6 +428,11 @@ void Matrix::operator/=(const double &number)
 
 const bool Matrix::operator==(const Matrix &customMatrix)
 {
+    if (rows != customMatrix.rows || cols != customMatrix.cols)
+    {
+        return false;
+    }
+
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
@@ -414,11 +463,89 @@ const bool Matrix::operator!=(const Matrix &customMatrix)
     return false;
 }
 
-const Matrix Matrix::inverse()
+const double Matrix::calculateDeterminant()
 {
-    Matrix temp(rows, cols);
+    if (rows == cols)
+    {
+        if (rows == 2)
+        {
+            return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
+        }
 
-    return temp;
+        Matrix matrixMinor(rows - 1, cols - 1);
+
+        double calculateDeterminant = 0;
+
+        for (int i = 0; i < cols; i++)
+        {
+            for (int j = 1; j < rows; j++)
+            {
+                for (int k = 0; k < cols; k++)
+                {
+                    if (k != i)
+                    {
+                        matrixMinor.matrix[j - 1][(k < i) ? k : k - 1] = matrix[j][k];
+                    }
+                }
+            }
+
+            calculateDeterminant += (i % 2 == 0) ? matrix[0][i] * matrixMinor.calculateDeterminant() : -matrix[0][i] * matrixMinor.calculateDeterminant();
+        }
+
+        return calculateDeterminant;
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения детерминанта данная матрица должна быть квадратной! <" << endl;
+    }
+}
+
+Matrix Matrix::inverse()
+{
+    if (rows == cols)
+    {
+        double determinant = calculateDeterminant();
+
+        Matrix temp(cols, rows), matrixMinor(rows - 1, cols - 1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                for (int k = 0; k < rows; k++)
+                {
+                    for (int l = 0; l < cols; l++)
+                    {
+                        if (k != i && l != j)
+                        {
+                            matrixMinor.matrix[(k < i) ? k : k - 1][(l < j) ? l : l - 1] = matrix[k][l];
+                        }
+                    }
+                }
+
+                temp.matrix[i][j] = matrixMinor.calculateDeterminant();
+            }
+        }
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if ((i + j) % 2 != 0)
+                {
+                    temp.matrix[i][j] = -temp.matrix[i][j];
+                }
+            }
+        }
+
+        temp = temp.transposition();
+
+        return temp * (1 / determinant);
+    }
+    else
+    {
+        cout << "[> ERROR: Для нахождения обратной матрицы данная матрица должна быть квадратной! <" << endl;
+    }
 }
 
 const Matrix Matrix::transposition()
