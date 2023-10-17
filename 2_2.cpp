@@ -7,18 +7,17 @@ class Triangle
 {
 private:
     double a, b, c;
-    int setTriangle(int x) { return x; };
 
 public:
     Triangle();
     Triangle(double a, double b, double c);
     Triangle(const Triangle &obj);
-    void setTriangle(double custom_a, double custom_b, double custom_c);
-    bool existence();
-    void perimeter();
-    void area();
-    void corners();
-    void sides();
+    void setTriangle(double customA, double customB, double customC);
+    const bool existence();
+    const void perimeter();
+    const void area();
+    const void corners();
+    const void sides();
     ~Triangle();
 };
 
@@ -36,20 +35,20 @@ Triangle::Triangle(double a, double b, double c)
 
 Triangle::Triangle(const Triangle &obj)
 {
-    a = setTriangle(obj.a);
-    b = setTriangle(obj.b);
-    c = setTriangle(obj.c);
+    a = obj.a;
+    b = obj.b;
+    c = obj.c;
     cout << " -- Был вызван конструктор копирования -- " << endl;
 }
 
-void Triangle::setTriangle(double custom_a, double custom_b, double custom_c)
+void Triangle::setTriangle(double customA, double customB, double customC)
 {
-    a = custom_a;
-    b = custom_b;
-    c = custom_c;
+    a = customA;
+    b = customB;
+    c = customC;
 }
 
-bool Triangle::existence()
+const bool Triangle::existence()
 {
     if (a < b + c && b < a + c && c < a + b)
         return true;
@@ -57,18 +56,18 @@ bool Triangle::existence()
         return false;
 }
 
-void Triangle::perimeter()
+const void Triangle::perimeter()
 {
     cout << "   Периметр: " << a + b + c << endl;
 }
 
-void Triangle::area()
+const void Triangle::area()
 {
     double p = (a + b + c) / 2;
     cout << "   Площадь: " << sqrt(p * (p - a) * (p - b) * (p - c)) << endl;
 }
 
-void Triangle::corners()
+const void Triangle::corners()
 {
     const double PI = 3.141592653589793;
     double alpha, beta, gamma;
@@ -78,7 +77,7 @@ void Triangle::corners()
     cout << "   Углы: " << alpha << ", " << beta << ", " << gamma << endl;
 }
 
-void Triangle::sides()
+const void Triangle::sides()
 {
     cout << "   Стороны: " << a << ", " << b << ", " << c << endl;
 }
@@ -107,6 +106,7 @@ int main()
 
         Triangle t2 = t;
         cout << "Объект 't2' был создан и скопировал свойства объекта 't'" << endl;
+        t2.sides();
 
         return 0;
     }

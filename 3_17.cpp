@@ -23,7 +23,7 @@ public:
     const Matrix operator-(const Matrix &customMatrix);
     const Matrix operator*(const Matrix &customMatrix);
     const Matrix operator*(const double &number);
-    const Matrix operator/(const Matrix &customMatrix);
+    const Matrix operator/(Matrix &customMatrix);
     const Matrix operator/(const double &number);
 
     void operator+=(const Matrix &customMatrix);
@@ -72,9 +72,9 @@ int main()
     resultMatrix = matrix * anotherMatrix;
     resultMatrix.print();
 
-    // resultMatrix = matrix / anotherMatrix;
-    // cout << "Частное матриц:" << endl;
-    // resultMatrix.print();
+    resultMatrix = matrix / anotherMatrix;
+    cout << "Частное матриц:" << endl;
+    resultMatrix.print();
 
     cout << "Транспонированная первая матрица:" << endl;
     resultMatrix = matrix.transposition();
@@ -303,7 +303,7 @@ const Matrix Matrix::operator*(const double &number)
     return temp;
 }
 
-const Matrix Matrix::operator/(const Matrix &customMatrix)
+const Matrix Matrix::operator/(Matrix &customMatrix)
 {
     Matrix temp(rows, cols);
     Matrix inversedCustomMatrix = customMatrix.inverse();
@@ -539,8 +539,9 @@ Matrix Matrix::inverse()
         }
 
         temp = temp.transposition();
+        temp = temp * (1 / determinant);
 
-        return temp * (1 / determinant);
+        return temp;
     }
     else
     {
