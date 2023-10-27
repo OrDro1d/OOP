@@ -21,6 +21,37 @@ public:
     ~Triangle();
 };
 
+int main()
+{
+    double a, b, c;
+    cin >> a >> b >> c;
+    Triangle t = Triangle(a, b, c);
+
+    if (t.existence())
+    {
+        cout << "Данный треугольник существует." << endl;
+        cout << "Свойства заданного Вами треугольника: " << endl;
+
+        t.sides();
+        t.perimeter();
+        t.area();
+        t.corners();
+
+        Triangle t2 = t;
+        cout << "Объект 't2' был создан и скопировал свойства объекта 't'" << endl;
+        t2.sides();
+
+        return 0;
+    }
+
+    else
+    {
+        cout << "Данный треугольник НЕ существует." << endl;
+
+        return 0;
+    }
+}
+
 Triangle::Triangle()
 {
     a = b = c = 1.0;
@@ -86,35 +117,4 @@ Triangle::~Triangle()
 {
     cout << " -- Был вызван деструктор -- " << endl;
     cout << "Память освобождена: объект был удалён." << endl;
-}
-
-int main()
-{
-    double a, b, c;
-    cin >> a >> b >> c;
-    Triangle t = Triangle(a, b, c);
-
-    if (t.existence())
-    {
-        cout << "Данный треугольник существует." << endl;
-        cout << "Свойства заданного Вами треугольника: " << endl;
-
-        t.sides();
-        t.perimeter();
-        t.area();
-        t.corners();
-
-        Triangle t2 = t;
-        cout << "Объект 't2' был создан и скопировал свойства объекта 't'" << endl;
-        t2.sides();
-
-        return 0;
-    }
-
-    else
-    {
-        cout << "Данный треугольник НЕ существует." << endl;
-
-        return 0;
-    }
 }

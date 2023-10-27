@@ -72,9 +72,9 @@ int main()
     resultMatrix = matrix * anotherMatrix;
     resultMatrix.print();
 
-    resultMatrix = matrix / anotherMatrix;
-    cout << "Частное матриц:" << endl;
-    resultMatrix.print();
+    // resultMatrix = matrix / anotherMatrix;
+    // cout << "Частное матриц:" << endl;
+    // resultMatrix.print();
 
     cout << "Транспонированная первая матрица:" << endl;
     resultMatrix = matrix.transposition();
