@@ -81,6 +81,9 @@ void Triangle::setTriangle(double customA, double customB, double customC)
 
 const bool Triangle::existence()
 {
+    if (a <= 0.0 || b <= 0.0 || c <= 0.0)
+        return false;
+
     if (a < b + c && b < a + c && c < a + b)
         return true;
     else
