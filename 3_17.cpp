@@ -30,7 +30,7 @@ public:
     void operator-=(const Matrix &customMatrix);
     void operator*=(const Matrix &customMatrix);
     void operator*=(const double &number);
-    void operator/=(const Matrix &customMatrix);
+    void operator/=(Matrix &customMatrix);
     void operator/=(const double &number);
 
     const bool operator==(const Matrix &usersMatrix);
@@ -47,35 +47,35 @@ int main()
 {
     Matrix matrix;
 
-    cout << "Задайте размеры первой матрицы:" << endl;
+    cout << "Задайте размеры I матрицы:" << endl;
     int rows, cols;
     cin >> rows >> cols;
 
-    cout << "Заполните первую матрицу:" << endl;
+    cout << "Заполните I матрицу:" << endl;
     matrix.create(rows, cols);
     matrix.fill();
-    cout << "Ваша первая матрица:" << endl;
+    cout << "Ваша I матрица:" << endl;
     matrix.print();
 
     Matrix anotherMatrix, resultMatrix;
 
-    cout << "Задайте размеры второй матрицы:" << endl;
+    cout << "Задайте размеры II матрицы:" << endl;
     int anotherRows, anotherCols;
     cin >> anotherRows >> anotherCols;
 
-    cout << "Заполните вторую матрицу:" << endl;
+    cout << "Заполните II матрицу:" << endl;
     anotherMatrix.createAndFill(anotherRows, anotherCols);
-    cout << "Ваша вторая матрица:" << endl;
+    cout << "Ваша II матрица:" << endl;
     anotherMatrix.print();
 
-    cout << "Детерминант первой матрицы:" << endl;
+    cout << "Детерминант I матрицы:" << endl;
     cout << matrix.determinant() << endl;
 
-    cout << "Транспонированная первая матрица:" << endl;
+    cout << "Транспонированная I матрица:" << endl;
     resultMatrix = matrix.transposition();
     resultMatrix.print();
 
-    cout << "Инвертированная первая матрица:" << endl;
+    cout << "Инвертированная I матрица:" << endl;
     resultMatrix = matrix.inverse();
     resultMatrix.print();
 
@@ -354,7 +354,7 @@ void Matrix::operator+=(const Matrix &customMatrix)
     {
         if (customMatrix.rows != rows || customMatrix.cols != cols)
         {
-            throw " - ОШИБКА!: Для нахождения разности двух матриц их размеры должны совпадать! - ";
+            throw " - ОШИБКА!: Для нахождения суммы двух матриц их размеры должны совпадать! - ";
         }
     }
     catch (const char *errorMessage)
@@ -436,9 +436,8 @@ void Matrix::operator*=(const double &number)
     }
 }
 
-void Matrix::operator/=(const Matrix &customMatrix)
+void Matrix::operator/=(Matrix &customMatrix)
 {
-
     try
     {
         if (cols != customMatrix.rows)
@@ -451,6 +450,8 @@ void Matrix::operator/=(const Matrix &customMatrix)
         cout << errorMessage << endl;
         exit(1);
     }
+
+    *this / customMatrix;
 }
 
 void Matrix::operator/=(const double &number)
@@ -609,9 +610,8 @@ const Matrix Matrix::inverse()
     }
 
     temp = temp.transposition();
-    temp = temp * (1 / d);
 
-    return temp;
+    return temp * (1 / d);
 }
 
 const Matrix Matrix::transposition()
