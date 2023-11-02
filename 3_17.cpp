@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class Matrix // Мой вариант реализации класса вещественных массивов.
+class Matrix // Мой вариант реализации класса вещественных матриц.
 {
 private:
     unsigned rows, cols;
@@ -15,16 +15,16 @@ public:
     void create(unsigned customRows, unsigned customCols);
     void fill();
     void createAndFill(unsigned customRows, unsigned customCols);
-    const void print();
+    void print() const;
 
     void operator=(const Matrix &customMatrix);
 
-    const Matrix operator+(const Matrix &customMatrix);
-    const Matrix operator-(const Matrix &customMatrix);
-    const Matrix operator*(const Matrix &customMatrix);
-    const Matrix operator*(const double &number);
-    const Matrix operator/(Matrix &customMatrix);
-    const Matrix operator/(const double &number);
+    Matrix operator+(const Matrix &customMatrix) const;
+    Matrix operator-(const Matrix &customMatrix) const;
+    Matrix operator*(const Matrix &customMatrix) const;
+    Matrix operator*(const double &number) const;
+    Matrix operator/(Matrix &customMatrix) const;
+    Matrix operator/(const double &number) const;
 
     void operator+=(const Matrix &customMatrix);
     void operator-=(const Matrix &customMatrix);
@@ -33,12 +33,12 @@ public:
     void operator/=(Matrix &customMatrix);
     void operator/=(const double &number);
 
-    const bool operator==(const Matrix &usersMatrix);
-    const bool operator!=(const Matrix &usersMatrix);
+    bool operator==(const Matrix &usersMatrix) const;
+    bool operator!=(const Matrix &usersMatrix) const;
 
-    const double determinant();
-    const Matrix inverse();
-    const Matrix transposition();
+    double determinant() const;
+    Matrix inverse() const;
+    Matrix transposition() const;
 
     ~Matrix();
 };
@@ -175,7 +175,7 @@ void Matrix::createAndFill(unsigned customRows, unsigned customCols)
     }
 }
 
-const void Matrix::print()
+void Matrix::print() const
 {
     for (int i = 0; i < rows; i++)
     {
@@ -220,7 +220,7 @@ void Matrix::operator=(const Matrix &customMatrix)
     }
 }
 
-const Matrix Matrix::operator+(const Matrix &customMatrix)
+Matrix Matrix::operator+(const Matrix &customMatrix) const
 {
     try
     {
@@ -248,7 +248,7 @@ const Matrix Matrix::operator+(const Matrix &customMatrix)
     return temp;
 }
 
-const Matrix Matrix::operator-(const Matrix &customMatrix)
+Matrix Matrix::operator-(const Matrix &customMatrix) const
 {
     try
     {
@@ -276,7 +276,7 @@ const Matrix Matrix::operator-(const Matrix &customMatrix)
     return temp;
 }
 
-const Matrix Matrix::operator*(const Matrix &customMatrix)
+Matrix Matrix::operator*(const Matrix &customMatrix) const
 {
     try
     {
@@ -309,7 +309,7 @@ const Matrix Matrix::operator*(const Matrix &customMatrix)
     return temp;
 }
 
-const Matrix Matrix::operator*(const double &number)
+Matrix Matrix::operator*(const double &number) const
 {
     Matrix temp(rows, cols);
 
@@ -324,7 +324,7 @@ const Matrix Matrix::operator*(const double &number)
     return temp;
 }
 
-const Matrix Matrix::operator/(Matrix &customMatrix)
+Matrix Matrix::operator/(Matrix &customMatrix) const
 {
     Matrix temp(rows, cols), inversedCustomMatrix = customMatrix.inverse();
 
@@ -333,7 +333,7 @@ const Matrix Matrix::operator/(Matrix &customMatrix)
     return temp;
 }
 
-const Matrix Matrix::operator/(const double &number)
+Matrix Matrix::operator/(const double &number) const
 {
     Matrix temp(rows, cols);
 
@@ -465,7 +465,7 @@ void Matrix::operator/=(const double &number)
     }
 }
 
-const bool Matrix::operator==(const Matrix &customMatrix)
+bool Matrix::operator==(const Matrix &customMatrix) const
 {
     if (rows != customMatrix.rows || cols != customMatrix.cols)
     {
@@ -486,7 +486,7 @@ const bool Matrix::operator==(const Matrix &customMatrix)
     return true;
 }
 
-const bool Matrix::operator!=(const Matrix &customMatrix)
+bool Matrix::operator!=(const Matrix &customMatrix) const
 {
     for (int i = 0; i < rows; i++)
     {
@@ -502,7 +502,7 @@ const bool Matrix::operator!=(const Matrix &customMatrix)
     return false;
 }
 
-const double Matrix::determinant()
+double Matrix::determinant() const
 {
     try
     {
@@ -546,7 +546,7 @@ const double Matrix::determinant()
     return d;
 }
 
-const Matrix Matrix::inverse()
+Matrix Matrix::inverse() const
 {
     try
     {
@@ -614,7 +614,7 @@ const Matrix Matrix::inverse()
     return temp * (1 / d);
 }
 
-const Matrix Matrix::transposition()
+Matrix Matrix::transposition() const
 {
     Matrix temp(cols, rows);
 
