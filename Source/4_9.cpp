@@ -96,6 +96,7 @@ void ComplexNumber::printAlgebraic() const
     double a, b;
     b = r * cos(f);
     a = r * sin(f);
+
     if (b >= 0)
     {
         cout << a << " + "
