@@ -46,13 +46,13 @@ public:
     ~Square(){};
 
     double sides() const;
-    virtual void printSides() const;
-    virtual double diagonals() const;
-    virtual void printDiagonals() const;
-    virtual double perimeter() const;
-    virtual void printPerimeter() const;
-    virtual double area() const;
-    virtual void printArea() const;
+    void printSides() const;
+    double diagonals() const;
+    void printDiagonals() const;
+    double perimeter() const;
+    void printPerimeter() const;
+    double area() const;
+    void printArea() const;
 };
 
 int main()
@@ -270,19 +270,12 @@ void Square::printDiagonals() const
 
 double Square::perimeter() const
 {
-    return sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by)) +
-           sqrt((bx - cx) * (bx - cx) + (by - cy) * (by - cy)) +
-           sqrt((cx - dx) * (cx - dx) + (cy - dy) * (cy - dy)) +
-           sqrt((dx - ax) * (dx - ax) + (dy - ay) * (dy - ay));
+    return sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by)) * 4;
 }
 
 void Square::printPerimeter() const
 {
-    cout << sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by)) +
-                sqrt((bx - cx) * (bx - cx) + (by - cy) * (by - cy)) +
-                sqrt((cx - dx) * (cx - dx) + (cy - dy) * (cy - dy)) +
-                sqrt((dx - ax) * (dx - ax) + (dy - ay) * (dy - ay))
-         << endl;
+    cout << sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by)) * 4 << endl;
 }
 
 double Square::area() const

@@ -13,7 +13,8 @@ using namespace std;
 class ComplexNumber
 {
 private:
-    double r, f;
+    double r; // Модуль r больше нуля.
+    double f;
 
 public:
     ComplexNumber(double r = 0, double f = 0);
@@ -61,6 +62,19 @@ int main()
 
 ComplexNumber::ComplexNumber(double r, double f)
 {
+    try
+    {
+        if (r < 0)
+        {
+            throw " - ОШИБКА! Модуль r должен быть неотрицательным! - ";
+        }
+    }
+    catch (const char *errorMessage)
+    {
+        cout << errorMessage << endl;
+        exit(1);
+    }
+
     this->r = r;
     this->f = f;
 };
@@ -94,8 +108,8 @@ void ComplexNumber::printTrigonometric() const
 void ComplexNumber::printAlgebraic() const
 {
     double a, b;
-    b = r * cos(f);
-    a = r * sin(f);
+    a = r * cos(f);
+    b = r * sin(f);
 
     if (b >= 0)
     {
@@ -112,12 +126,12 @@ void ComplexNumber::printAlgebraic() const
 ComplexNumber ComplexNumber::operator+(ComplexNumber const &number) const
 {
     double a, b;
-    b = r * cos(f);
-    a = r * sin(f);
+    a = r * cos(f);
+    b = r * sin(f);
 
     double otherA, otherB;
-    otherB = number.r * cos(number.f);
-    otherA = number.r * sin(number.f);
+    otherA = number.r * cos(number.f);
+    otherB = number.r * sin(number.f);
 
     a += otherA;
     b += otherB;
@@ -128,17 +142,17 @@ ComplexNumber ComplexNumber::operator+(ComplexNumber const &number) const
 ComplexNumber ComplexNumber::operator-(ComplexNumber const &number) const
 {
     double a, b;
-    b = r * cos(f);
-    a = r * sin(f);
+    a = r * cos(f);
+    b = r * sin(f);
 
     double otherA, otherB;
-    otherB = number.r * cos(number.f);
-    otherA = number.r * sin(number.f);
+    otherA = number.r * cos(number.f);
+    otherB = number.r * sin(number.f);
 
     a -= otherA;
     b -= otherB;
 
-    return ComplexNumber(sqrt(a * a + b * b), tan(b / a));
+    return ComplexNumber(sqrt(a * a + b * b), atan(b / a));
 }
 
 ComplexNumber ComplexNumber::operator*(ComplexNumber const &number) const
