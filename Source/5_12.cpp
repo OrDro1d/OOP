@@ -22,7 +22,6 @@ public:
     Tetragon();
     Tetragon(double ax, double ay, double bx, double by,
              double cx, double cy, double dx, double dy);
-    Tetragon(double (&a)[2], double (&b)[2], double (&c)[2], double (&d)[2]);
     ~Tetragon(){};
 
     double *sides() const;
@@ -42,7 +41,6 @@ public:
     Square(double a);
     Square(double ax, double ay, double bx, double by,
            double cx, double cy, double dx, double dy);
-    Square(double (&a)[2], double (&b)[2], double (&c)[2], double (&d)[2]);
     ~Square(){};
 
     double sides() const;
@@ -118,10 +116,6 @@ Tetragon::Tetragon() : ax(0), ay(0), bx(0), by(0), cx(0), cy(0), dx(0), dy(0) {}
 Tetragon::Tetragon(double ax, double ay, double bx, double by,
                    double cx, double cy, double dx, double dy) : ax(ax), ay(ay), bx(bx), by(by),
                                                                  cx(cx), cy(cy), dx(dx), dy(dy) {}
-
-Tetragon::Tetragon(double (&a)[2], double (&b)[2],
-                   double (&c)[2], double (&d)[2]) : ax(a[0]), ay(a[1]), bx(b[0]), by(b[1]),
-                                                     cx(c[0]), cy(c[1]), dx(d[0]), dy(d[1]) {}
 
 double *Tetragon::sides() const
 {
@@ -235,17 +229,6 @@ Square::Square(double ax, double ay, double bx, double by,
         cout << errorMessage << endl;
         exit(1);
     }
-}
-
-Square::Square(double (&a)[2], double (&b)[2],
-               double (&c)[2], double (&d)[2])
-{
-    double ax = a[0], ay = a[1];
-    double bx = b[0], by = b[1];
-    double cx = c[0], cy = c[1];
-    double dx = d[0], dy = d[1];
-
-    Square(ax, ay, bx, by, cx, cy, dx, dy);
 }
 
 double Square::sides() const
