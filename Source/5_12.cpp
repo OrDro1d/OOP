@@ -19,9 +19,8 @@ protected:
     double dx, dy;
 
 public:
-    Tetragon();
-    Tetragon(double ax, double ay, double bx, double by,
-             double cx, double cy, double dx, double dy);
+    Tetragon(double ax = 0, double ay = 0, double bx = 0, double by = 0,
+             double cx = 0, double cy = 0, double dx = 0, double dy = 0);
     ~Tetragon(){};
 
     double *sides() const;
@@ -37,8 +36,7 @@ public:
 class Square : public Tetragon
 {
 public:
-    Square();
-    Square(double a);
+    Square(double a = 0);
     Square(double ax, double ay, double bx, double by,
            double cx, double cy, double dx, double dy);
     ~Square(){};
@@ -111,8 +109,6 @@ int main()
     return 0;
 }
 // Определения методов класса Tetragon (четырёхугольник).
-Tetragon::Tetragon() : ax(0), ay(0), bx(0), by(0), cx(0), cy(0), dx(0), dy(0) {}
-
 Tetragon::Tetragon(double ax, double ay, double bx, double by,
                    double cx, double cy, double dx, double dy) : ax(ax), ay(ay), bx(bx), by(by),
                                                                  cx(cx), cy(cy), dx(dx), dy(dy) {}
@@ -188,8 +184,6 @@ void Tetragon::printArea() const
     cout << sqrt((p - ab) * (p - bc) * (p - cd) * (p - da)) << endl;
 }
 // Определения методов класса Square (квадрат).
-Square::Square() : Tetragon(){};
-
 Square::Square(double a) : Tetragon(0, 0, 0, a, a, a, a, 0){};
 
 Square::Square(double ax, double ay, double bx, double by,
