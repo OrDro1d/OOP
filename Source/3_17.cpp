@@ -8,7 +8,6 @@ private:
     double **matrix = nullptr;
 
 public:
-    Matrix(){};
     Matrix(unsigned customRows, unsigned customCols);
     Matrix(const Matrix &obj);
 
@@ -23,14 +22,14 @@ public:
     Matrix operator-(const Matrix &customMatrix) const;
     Matrix operator*(const Matrix &customMatrix) const;
     Matrix operator*(const double &number) const;
-    Matrix operator/(Matrix &customMatrix) const;
+    Matrix operator/(const Matrix &customMatrix) const;
     Matrix operator/(const double &number) const;
 
     void operator+=(const Matrix &customMatrix);
     void operator-=(const Matrix &customMatrix);
     void operator*=(const Matrix &customMatrix);
     void operator*=(const double &number);
-    void operator/=(Matrix &customMatrix);
+    void operator/=(const Matrix &customMatrix);
     void operator/=(const double &number);
 
     bool operator==(const Matrix &usersMatrix) const;
@@ -90,16 +89,9 @@ int main()
     return 0;
 }
 
-Matrix::Matrix(unsigned customRows, unsigned customCols)
+Matrix::Matrix(unsigned customRows = 0, unsigned customCols = 0)
 {
-    rows = customRows;
-    cols = customCols;
-
-    matrix = new double *[rows];
-    for (int i = 0; i < rows; i++)
-    {
-        matrix[i] = new double[cols];
-    }
+    create(customRows, customCols);
 
     for (int i = 0; i < rows; i++)
     {
@@ -155,16 +147,7 @@ void Matrix::fill()
 
 void Matrix::createAndFill(unsigned customRows, unsigned customCols)
 {
-    rows = customRows;
-    cols = customCols;
-
-    matrix = new double *[rows];
-
-    for (int i = 0; i < rows; i++)
-
-    {
-        matrix[i] = new double[cols];
-    }
+    create(customRows, customCols);
 
     for (int i = 0; i < rows; i++)
     {
@@ -324,7 +307,7 @@ Matrix Matrix::operator*(const double &number) const
     return temp;
 }
 
-Matrix Matrix::operator/(Matrix &customMatrix) const
+Matrix Matrix::operator/(const Matrix &customMatrix) const
 {
     Matrix temp(rows, cols), inversedCustomMatrix = customMatrix.inverse();
 
@@ -436,7 +419,7 @@ void Matrix::operator*=(const double &number)
     }
 }
 
-void Matrix::operator/=(Matrix &customMatrix)
+void Matrix::operator/=(const Matrix &customMatrix)
 {
     try
     {

@@ -9,16 +9,16 @@ private:
     double a, b, c;
 
 public:
-    Triangle();
-    Triangle(double a, double b, double c);
+    Triangle(double a = 0, double b = 0, double c = 0);
     Triangle(const Triangle &obj);
+    ~Triangle();
+
     void setTriangle(double customA, double customB, double customC);
     const bool existence();
     const void perimeter();
     const void area();
     const void corners();
     const void sides();
-    ~Triangle();
 };
 
 int main()
@@ -52,13 +52,7 @@ int main()
     }
 }
 
-Triangle::Triangle()
-{
-    a = b = c = 1.0;
-    cout << " -- Был вызван конструктор по-умолчанию -- " << endl;
-}
-
-Triangle::Triangle(double a, double b, double c)
+Triangle::Triangle(double a = 0, double b = 0, double c = 0)
 {
     setTriangle(a, b, c);
     cout << " -- Был вызван конструктор -- " << endl;
